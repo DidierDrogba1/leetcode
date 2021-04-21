@@ -1,0 +1,60 @@
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+    # def longestPalindrome(self, s):
+    #     # write your code here
+    #     # O(n3)解法，双指针相向而行
+    #     #伪代码 1. 特判 2. 从长到短遍历str 3. def 判断回文函数
+    #     if not s:
+    #         return None 
+    #     #两个for循环和if的逻辑举例子，手推比较好懂
+    #     for length in range(len(s), 0, -1):  
+    #         for i in range(len(s) - length + 1):
+    #             if self.is_Palindrome(s, i, i + length - 1):
+    #                 return s[i : i + length]   
+    #     return ''
+
+    # def is_Palindrome(self, s, left, right):
+    #     while left < right and s[left] == s[right]: #注意这里是< 没有等于
+    #         left += 1
+    #         right -= 1
+    #     return left >= right 
+    #     # 这里奇数是 left = right, 偶数是 left > right
+
+    # def longestPalindrome(self, s):
+    #     # O(n2)解法，以中心点为轴，双指针背向而行
+    #     # 1. 特判 2. 双指针 3. def 判断函数 
+    #     if not s:
+    #         return None
+
+    #     ans = (0, 0)  # (长度， 起始点)
+    #     for mid in range(0, len(s)):
+    #         ans = max(ans, self.get_palindrome(s, mid, mid))
+    #         ans = max(ans, self.get_palindrome(s, mid, mid+1))
+ 
+    #     return s[ans[1] : ans[0] + ans[1]]  #特别注意前闭后开
+
+    # def get_palindrome(self, s, left, right):
+    #     while left >= 0 and right <= len(s) - 1 and s[left] == s[right]:
+    #         left -= 1
+    #         right += 1
+    #     return right - left - 1, left + 1  #画例子想出来
+        # 第三种方法， DP， O(n2)
+        if not s:
+            return s
+
+        n = len(s)
+        is_Palindrome = [[False] * n for _ in range(n)]
+        for i in range(n):
+            is_Palindrome[i][i] = True  
+        for i in range(1, n):
+            is_Palindrome[i][i - 1] = True
+
+        start, longest = 0, 1
+        for length in range(2, n + 1):
+            for i in range(n - length + 1):
+                j = i + length - 1
+                is_Palindrome[i][j] = is_Palindrome[i + 1][j - 1] and s[i] == s[j]
+                if is_Palindrome[i][j] and length >= longest:
+                    start = i
+                    longest = length
+        return s[start : start + longest]
