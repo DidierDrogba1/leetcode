@@ -1,0 +1,42 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reorderList(self, head: ListNode) -> None:
+        if not head:
+            return  
+        
+        mid = self.findMid(head)
+        head_l1, head_l2 = head, mid.next 
+        mid.next = None #这行代码忘记加了，直接跑不过； 大概是说把L1, L2这里就断开了，这样之后才好合并
+        head_l2 = self.reverseLinkedlist(head_l2)
+        self.mergeLinkedlist(head_l1, head_l2)
+
+    def findMid(self, head):
+        slow, fast = head, head 
+        while fast.next and fast.next.next:
+            fast = fast.next.next
+            slow = slow.next 
+        return slow
+    
+    def reverseLinkedlist(self, head):
+        pre, curr = None, head 
+        while curr:
+            Tmp = curr.next 
+            curr.next = pre 
+            pre = curr 
+            curr = Tmp 
+        return pre 
+
+    def mergeLinkedlist(self, head_l1, head_l2):
+        while head_l1 and head_l2:
+            tmp1 = head_l1.next 
+            tmp2 = head_l2.next 
+            
+            head_l1.next = head_l2 
+            head_l1 = tmp1 
+
+            head_l2.next = tmp1
+            head_l2 = tmp2
