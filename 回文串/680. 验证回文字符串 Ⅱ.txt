@@ -1,0 +1,45 @@
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        # if len(s) == 1:
+        #     return True 
+    #这种写法重复代码比较多
+    #     left, right = 0, len(s) - 1
+    #     while left < right:
+    #         while left < right and s[left] != s[right]:
+    #             return self.isPalindrome(s, left + 1, right) or self.isPalindrome(s, left, right - 1)
+    #         while left < right and s[left] == s[right]:
+    #             left += 1
+    #             right -= 1
+    #     return True
+
+
+    # def isPalindrome(self, s, left, right):
+    #     while left < right:
+    #         if s[left] != s[right]:
+    #             return False 
+    #         left += 1
+    #         right -= 1
+    #     return True 
+
+    #这种写法比较优雅
+        if len(s) == 1:
+            return True 
+
+        left, right = self.find_diff(s, 0, len(s) - 1)
+        if left >= right:
+            return True 
+        return self.isPalindrome(s, left + 1, right) or\
+        self.isPalindrome(s, left, right - 1)                     
+
+    def find_diff(self, s, left, right):
+        while left < right:
+            if s[left] != s[right]:
+                return left, right 
+            left += 1
+            right -= 1
+        return left, right
+
+
+    def isPalindrome(self, s, left, right):
+        left, right = self.find_diff(s, left, right)
+        return left >= right
