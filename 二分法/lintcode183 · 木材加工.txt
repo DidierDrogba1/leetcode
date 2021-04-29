@@ -1,0 +1,33 @@
+class Solution:
+    """
+    @param L: Given n pieces of wood with length L[i]
+    @param k: An integer
+    @return: The maximum length of the small pieces
+    """
+    #本题的关键在于每段长度与段数存在负相关映射关系，即每段长度为index，段数为value，之后使用经典双指针做法
+    #详细解释在pdf中
+    def woodCut(self, L, k):
+        # write your code here
+        if not L:
+            return 0
+        start, end = 1, min(max(L), sum(L) // k)
+        
+        if end <= 0:
+            return 0 
+        while start + 1 < end:
+            mid = start + (end - start) // 2
+            if self.get_counts(L, mid) < k:
+                end = mid
+            elif self.get_counts(L, mid) > k:
+                start = mid 
+            elif self.get_counts(L, mid) == k:
+                start = mid
+        if self.get_counts(L, end) >= self.get_counts(L, start):
+            return end
+        else:
+            return start
+
+    def get_counts(self, L, length):
+        return sum(l // length for l in L )
+
+        

@@ -1,0 +1,75 @@
+class Solution:
+    # def search(self, nums: List[int], target: int) -> int:
+    #     #自己的写法
+    #     #第一次二分法，找到最小元素对应的index，得到两个有序区间
+    #     if len(nums) == 1:
+    #         return 0 if nums[0] == target else -1 
+    #     start, end, min_index = 0, len(nums) - 1, 0
+    #     while start + 1 < end:
+    #         mid = start + (end - start) // 2
+    #         if nums[mid] > nums[end]:
+    #             start = mid 
+    #         if nums[mid] < nums[end]:
+    #             end = mid 
+    #     if nums[start] < nums[end]:
+    #         min_index = start 
+    #     if nums[start] > nums[end]:
+    #         min_index = end    
+    #     #第二次二分法，在两个升序区间中进行经典二分
+    #     #index区间为 [start, min_index] [min_index, end]
+    #     if nums[min_index] <= target <= nums[len(nums) - 1]:
+    #         start, end = min_index, len(nums) - 1
+    #         while start + 1 < end:
+    #             mid = start + (end - start) // 2
+    #             if nums[mid] > target:
+    #                 end = mid 
+    #             if nums[mid] < target:
+    #                 start = mid
+    #             if nums[mid] == target:
+    #                 return mid 
+    #         if nums[start] == target:
+    #             return start              
+    #         if nums[end] == target:
+    #             return end 
+    #         return -1 
+
+    #     if target >= nums[0] :
+    #         start, end = 0, min_index - 1
+    #         while start + 1 < end:
+    #             mid = start + (end - start) // 2
+    #             if nums[mid] > target:
+    #                 end = mid 
+    #             if nums[mid] < target:
+    #                 start = mid
+    #             if nums[mid] == target:
+    #                 return mid 
+    #         if nums[start] == target:
+    #             return start              
+    #         if nums[end] == target:
+    #             return end 
+    #         return -1       
+
+    #     return -1     
+
+#九章的写法, 虽然只用了一次二分，但是思维复杂度很高   
+    def search(self, nums: List[int], target: int) -> int:
+        if len(nums) == 1:
+            return 0 if nums[0] == target else -1
+        start, end = 0, len(nums) - 1
+        while start + 1 < end:
+            mid = start + (end - start) // 2
+            if nums[mid] > nums[end]: #mid在左上段
+                if nums[start] <= target <= nums[mid]:
+                    end = mid 
+                else:
+                    start = mid 
+            if nums[mid] < nums[end]: #mid在右段
+                if nums[mid] <= target <= nums[end]:
+                    start = mid 
+                else:
+                    end = mid 
+        if nums[start] == target:
+            return start 
+        if nums[end] == target:
+            return end 
+        return -1

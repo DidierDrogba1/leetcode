@@ -1,0 +1,15 @@
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        #题目确定一定不为空list
+        #特判，当len <= 2, 直接返回最小值
+        start, end = 0, len(nums) - 1
+        if len(nums) <= 2:
+            return min(nums[start], nums[end])
+        
+        while start + 1 < end:
+            mid = start + (end - start) // 2
+            if nums[mid] > nums[end]:
+                start = mid 
+            if nums[mid] < nums[end]:
+                end = mid                 
+        return min(nums[start], nums[end])
