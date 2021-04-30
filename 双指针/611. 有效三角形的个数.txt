@@ -1,0 +1,25 @@
+class Solution:
+    #ans = 0
+    def triangleNumber(self, nums: List[int]) -> int:
+        if not nums or len(nums) < 3:
+            return 0
+        nums = sorted(nums)
+        ans = 0
+        for i in range(2, len(nums)):
+            target_val = nums[i]
+            ans += self.get_valid_trangle(0, i - 1, target_val, nums)
+        
+        return ans 
+
+    def get_valid_trangle(self, start, end, target_val, nums):
+        cnt = 0
+        while start < end:
+            if nums[start] + nums[end] > target_val:
+                cnt += (end - start)
+                end -= 1
+            elif nums[start] + nums[end] < target_val:
+                start += 1
+            else:
+                start += 1
+
+        return cnt

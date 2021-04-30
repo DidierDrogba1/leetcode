@@ -1,0 +1,31 @@
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        ans = []
+        nums = sorted(nums) # 双指针需要在排序好的list中使用，sorted默认升序
+        if not nums or len(nums) < 3:
+            return ans
+
+        for i in range(0, len(nums) - 2):
+            if i > 0 and nums[i] == nums[i - 1]: 
+                #i指针从左向右走，遇到和上一个相同的数字，跳过当前数字
+                continue 
+            start, end = i + 1, len(nums) - 1
+            target = -nums[i]
+            self.find_two_sum(start, end, nums, target, ans)
+        return ans
+    
+    def find_two_sum(self, start, end, nums, target, ans):
+        while start < end:
+            if nums[start] + nums[end] == target:
+                ans.append([-target, nums[start], nums[end]])
+                start += 1
+                end -= 1
+                #start, end前一个遇到过相同数字，跳过当前数字
+                while start < end and nums[start - 1] == nums[start]:
+                    start += 1               
+                while start < end and nums[end + 1] == nums[end]:
+                    end -= 1                
+            elif nums[start] + nums[end] < target:
+                start += 1
+            else:
+                end -= 1
