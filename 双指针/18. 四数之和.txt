@@ -1,0 +1,41 @@
+class Solution:  
+    #最好不用全局变量？
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        ans = []          
+        if not nums or len(nums) < 4:
+            return ans 
+        nums.sort()
+        length = len(nums)
+        for a_id in range(length - 3):
+            if a_id >= 1 and nums[a_id] == nums[a_id - 1]:
+                continue 
+            if nums[a_id] + nums[a_id + 1] + nums[a_id + 2] + nums[a_id + 3] > target:
+                break 
+            if nums[a_id] + nums[length - 3] + nums[length - 2] + nums[length - 1] \
+            < target:
+                continue
+            for b_id in range(a_id + 1, length - 2):
+                if b_id > a_id + 1 and nums[b_id] == nums[b_id - 1]:
+                    continue 
+                if nums[a_id] + nums[b_id] + nums[b_id + 1] + nums[b_id + 2] > target:
+                    break 
+                if nums[a_id] + nums[b_id] + nums[length - 2] + nums[length - 1] < target:
+                    continue 
+            # classic two pointers 
+                start, end = b_id + 1, length - 1
+                while start < end:
+                    target_cd = target - nums[a_id] - nums[b_id]
+                    if nums[start] + nums[end] == target_cd:
+                        ans.append([nums[a_id], nums[b_id], nums[start], nums[end]])
+                        start += 1
+                        end -= 1
+                        while start < end and start >= 1 and nums[start] == nums[start - 1]: 
+                            #这里是while，特别注意，因为if只会判断一次
+                            start += 1
+                        while start < end and end <= length - 2 and nums[end] == nums[end + 1]:
+                            end += 1
+                    elif nums[start] + nums[end] > target_cd:
+                        end -= 1
+                    elif nums[start] + nums[end] < target_cd:
+                        start += 1
+        return ans
