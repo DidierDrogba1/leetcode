@@ -1,0 +1,71 @@
+class Solution:
+    # def sortArray(self, nums: List[int]) -> List[int]:
+    #     if not nums or len(nums) <= 1:
+    #         return nums 
+    #     self.sortArrayHelper(nums, 0, len(nums) - 1)
+    #     return nums
+
+    # def sortArrayHelper(self, nums, start, end):
+    #     #递归三要素，定义，出口，拆解
+    #     # 解法1： 快排， 时间复杂度O(nlogn), 空间复杂度O(1)
+    #     if start >= end: #递归出口
+    #         return nums      
+    #     pivot = nums[start + (end - start) // 2]
+    #     left, right = start, end #这里要记忆原来的start， end
+        
+    #     while left <= right:
+    #         while left <= right and nums[left] < pivot:
+    #             left += 1
+    #         while left <= right and nums[right] > pivot:
+    #             right -= 1
+    #         if left <= right:
+    #             nums[left], nums[right] = nums[right], nums[left]
+    #             left += 1
+    #             right -= 1
+        
+    #     self.sortArrayHelper(nums, start, right)
+    #     self.sortArrayHelper(nums, left, end)
+
+    def sortArray(self, nums: List[int]) -> List[int]:
+        #解法2： 归并排序，时间复杂度O(nlogn), 空间复杂度O(logn)
+        tmp = [0 for _ in range(len(nums))]
+        self.merge_sort(tmp, nums, 0, len(nums) - 1)
+        return nums
+
+
+    def merge_sort(self, tmp, nums, start, end):
+
+        if start >= end:
+            return
+        
+        mid = start + (end - start) // 2
+        
+        self.merge_sort(tmp, nums, start, mid)
+        self.merge_sort(tmp, nums, mid + 1, end)
+        self.merge(tmp, nums, start, mid, end)
+
+    def merge(self, tmp, nums, start, mid, end):
+        left, right = start, mid + 1
+        tmp_index = start  
+        while left <= mid and right <= end:
+            if nums[left] <= nums[right]:
+                tmp[tmp_index] = nums[left]
+                tmp_index += 1
+                left += 1
+            else:
+                tmp[tmp_index] = nums[right]
+                tmp_index += 1   
+                right += 1
+
+        while left <= mid:
+                tmp[tmp_index] = nums[left]
+                tmp_index += 1
+                left += 1
+
+        while right <= end:
+                tmp[tmp_index] = nums[right]
+                tmp_index += 1   
+                right += 1
+
+        for i in range(start, end + 1):
+            nums[i] = tmp[i]

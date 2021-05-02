@@ -1,0 +1,57 @@
+class Solution:
+    """
+    @param A: an array
+    @return: total of reverse pairs
+    """
+    def reversePairs(self, A):
+        # write your code here
+        tmp = [0 for _ in range(len(A))]
+        return self.merge_sort(0, len(A) - 1, A, tmp)
+
+
+    def merge_sort(self, start, end, A, tmp):
+        if start >= end:
+            return 0 
+
+        mid = start + (end - start) // 2
+        cnt = 0
+        cnt += self.merge_sort(start, mid, A, tmp)
+        cnt += self.merge_sort(mid + 1, end, A, tmp)
+        cnt += self.merge(start, mid, end, A, tmp)
+        return cnt 
+
+
+    def merge(self, start, mid, end, A, tmp):
+        left, right = start, mid + 1
+        tmp_index = start
+        cnt = 0
+
+        while left <= mid and right <= end:
+            if A[left] <= A[right]:
+                tmp[tmp_index] = A[left]
+                tmp_index += 1
+                left += 1
+            else:
+                tmp[tmp_index] = A[right]
+                tmp_index += 1
+                right += 1
+                cnt += mid - left + 1
+
+        while left <= mid:
+                tmp[tmp_index] = A[left]
+                tmp_index += 1
+                left += 1
+
+        while right <= end:
+                tmp[tmp_index] = A[right]
+                tmp_index += 1
+                right += 1          
+
+        for i in range(start, end + 1):
+            A[i] = tmp[i]  
+        
+        return cnt 
+
+
+
+        

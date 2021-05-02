@@ -1,0 +1,30 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+    #     if not nums or len(nums) <= 1:
+    #         return 
+    #     self.sortColorsHelper(nums, 1)
+    #     self.sortColorsHelper(nums, 2)
+
+    # def sortColorsHelper(self, nums, k):
+    #     last_small_pointer = -1
+    #     for i in range(len(nums)):
+    #         if nums[i] < k: #如果i个元素<k， 那就把他和前一个元素进行交换
+    #             last_small_pointer += 1        
+    #             nums[i], nums[last_small_pointer] = nums[last_small_pointer], nums[i]
+    #     #return last_small_pointer + 1 这句话可有可无，记录下last+1的坐标，这样下一次就可以从没排好序后半段直接开始，而不需要重新遍历一遍数组
+            
+        # 第二种方法，直接遍历数组记录每个出现次数，然后直接覆盖nums
+        #有点麻烦，调过来调过去的
+        cnt_all = [0] * 3
+        for color_cnt_index in nums:
+            cnt_all[color_cnt_index] += 1 
+        index = 0
+        for i in range(len(cnt_all)):
+            single_cnt = cnt_all[i]
+            while single_cnt > 0:
+                nums[index] = i 
+                index += 1
+                single_cnt -= 1
