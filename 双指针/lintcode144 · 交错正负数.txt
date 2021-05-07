@@ -3,6 +3,7 @@ class Solution:
     @param: A: An integer array.
     @return: nothing
     """
+    #summary: 1. 部份快排(左边< pivot, 右边>pivot) 2. 根据正负元素个数分情况交叉排列
     def rerange(self, A):
         # write your code here
         if not A or len(A) <= 2:
