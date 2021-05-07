@@ -1,0 +1,40 @@
+class Solution:
+    """
+    @param: A: An integer array.
+    @return: nothing
+    """
+    def rerange(self, A):
+        # write your code here
+        if not A or len(A) <= 2:
+            return A 
+        neg_num = self.partial_quickSort(0, len(A) - 1, A, 0)
+        pos_num = len(A) - neg_num
+        self.inter_leave(neg_num, pos_num, A) 
+
+    def partial_quickSort(self, left, right, A, pivot):
+        while left <= right:
+            while left <= right and A[left] < pivot:
+                left += 1
+            while left <= right and A[right] > pivot:
+                right -= 1
+            if left <= right:  
+                A[left], A[right] = A[right], A[left]
+                left += 1
+                right -= 1
+
+        return left 
+
+    def inter_leave(self, neg_num, pos_num, A):
+        # 与正负个数有关，需要画图举例子来看
+        left_pointer = 1 if neg_num > pos_num else 0
+        right_pointer = len(A) - 2 if pos_num > neg_num else len(A) - 1
+        
+        while left_pointer <= right_pointer:
+            A[left_pointer], A[right_pointer] = A[right_pointer], A[left_pointer]
+            left_pointer += 2
+            right_pointer -= 2
+            
+
+
+
+
