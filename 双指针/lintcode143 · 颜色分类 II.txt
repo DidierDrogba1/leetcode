@@ -1,0 +1,68 @@
+class Solution:
+    """
+    @param colors: A list of integer
+    @param k: An integer
+    @return: nothing
+    """
+    # def sortColors2(self, colors, k):
+    #     # write your code here
+    #     #因为要1,2,3, .. k 排序，传统快排可以直接做
+    #     if not colors or len(colors) <= 1:
+    #         return colors 
+    #     self.quick_sort(0, len(colors) - 1, colors)
+    #     return colors 
+        
+
+
+    # def quick_sort(self, start, end, colors):
+    #     if start >= end:
+    #         return 
+
+    #     mid = start + (end - start) // 2
+    #     pivot = colors[mid]
+    #     left, right = start, end 
+        
+    #     while left <= right:
+    #         while left <= right and colors[left] < pivot:
+    #             left += 1
+    #         while left <= right and colors[right] > pivot:
+    #             right -= 1
+    #         if left <= right:
+    #             colors[left], colors[right] = colors[right], colors[left]
+    #             left += 1
+    #             right -= 1
+
+    #     self.quick_sort(start, right, colors)
+    #     self.quick_sort(left, end, colors)            
+
+    def sortColors2(self, colors, k):
+        #按照题目意思，使用K 
+        if not colors or len(colors) <= 1:
+            return colors 
+        self.quick_sort(1, k, 0, len(colors) - 1, colors)
+        return colors 
+
+    def quick_sort(self, color_start, color_end, index_start, index_end, nums):
+        #递归出口
+        if color_start >= color_end or index_start >= index_end:
+            return 
+        
+        color_mid = color_start + (color_end - color_start) // 2
+        #这里color_mid起到的就是pivot的作用
+        left, right = index_start, index_end
+
+        while left <= right:
+            while left <= right and nums[left] <= color_mid:
+                left += 1
+            while left <= right and nums[right] > color_mid:
+                right -= 1
+            if left <= right:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+                right -= 1
+
+        self.quick_sort(color_start, color_mid, index_start, left, nums)
+        self.quick_sort(color_mid + 1, color_end, right, index_end, nums)
+        
+
+            

@@ -1,0 +1,37 @@
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        if not nums:
+            return nums 
+        #方法一，交换法
+#         none_zero_pointer, zero_pointer = 0, 0
+
+#         while none_zero_pointer <= len(nums) - 1:
+#             if nums[none_zero_pointer] != 0:
+# #none_zero在while循环中一定会前进，只是根据情况是否与zero交换
+#                 if none_zero_pointer != zero_pointer:
+#                     nums[zero_pointer], nums[none_zero_pointer] \
+#                     =nums[none_zero_pointer],  nums[zero_pointer]
+
+#                 zero_pointer += 1
+#             none_zero_pointer += 1
+
+        # return nums 
+        #方法二，正解
+
+        none_zero_pointer, zero_pointer = 0, 0
+
+        while none_zero_pointer <= len(nums) - 1:
+            if nums[none_zero_pointer] != 0:
+                if none_zero_pointer != zero_pointer:
+                    nums[zero_pointer] = nums[none_zero_pointer]
+
+                zero_pointer += 1
+            none_zero_pointer += 1
+
+        while zero_pointer <= len(nums) - 1:
+            if nums[zero_pointer] != 0:
+                nums[zero_pointer] = 0
+            zero_pointer += 1
