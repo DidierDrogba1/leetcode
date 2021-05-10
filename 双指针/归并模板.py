@@ -1,4 +1,7 @@
 #归并排序，先局部有序，在整体有序
+#归并排序使用了分治的思想，无论是什么样的数据
+#，所花费的时间都是O(nlogn)的。
+
 def mergeSort(self, nums):
 	tmp = [0 for _ in range(len(nums))]
 	self.mergeSortHelper(nums, tmp, 0, len(nums) - 1)

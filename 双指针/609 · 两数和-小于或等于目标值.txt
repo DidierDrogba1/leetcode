@@ -1,0 +1,57 @@
+class Solution:
+    """
+    @param nums: an array of integer
+    @param target: an integer
+    @return: an integer
+    """
+    # def twoSum5(self, nums, target):
+    #     方法一，排序后双指针
+    #     if not nums:
+    #         return 0
+        
+    #     nums.sort()
+    #     start, end = 0, len(nums) - 1
+    #     ans = 0
+
+    #     while start <= len(nums) - 1:
+    #         while end >= 0:
+    #             if nums[start] + nums[end] > target: #确定end
+    #                 end -= 1
+    #             else:
+    #                 break
+                
+    #         if end > start:  #确定这个start的对数
+    #             ans += end - start
+            
+    #         start += 1 
+        
+    #     return ans 
+        
+    def twoSum5(self, nums, target):
+        #方法二，二分法加速查找end 
+        nums.sort()
+        ans, end = 0, len(nums)
+        start = 0
+        # 对于每个i，二分找到最大的j nums[i]+nums[j]<=target
+        while start <= len(nums) - 1:
+            # 确定二分上下界
+            left = start
+            right = len(nums)
+            max_index = start 
+            while left + 1 < right: #注意这里是+1，不然递归没有出口
+                mid = (int)(left + (right - left) // 2)
+                # 不大于target 可以提高下界
+                if nums[start] + nums[mid] <= target:
+                    left = mid
+                    max_index = mid
+                # 缩小上界
+                else:
+                    right = mid
+            ans += max_index - start 
+            start += 1
+
+        return ans
+
+                
+
+        
