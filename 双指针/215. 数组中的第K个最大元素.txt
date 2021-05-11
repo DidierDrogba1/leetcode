@@ -1,0 +1,32 @@
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        if not nums:
+            return nums 
+
+        k_element_index = len(nums) - k
+        self.quickSelect(0, len(nums) - 1, k_element_index, nums)
+        return nums[k_element_index]
+
+    
+    def quickSelect(self, start, end, k_element_index, nums):
+        
+        if start >= end:
+            return 
+
+        mid = start + (end - start) // 2
+        pivot = nums[mid]
+        left, right = start, end 
+
+        while left <= right:
+            while left <= right and nums[left] < pivot:
+                left += 1
+            while left <= right and nums[right] > pivot:
+                right -= 1
+            if left <= right:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+                right -= 1
+        if k_element_index <= right:
+            self.quickSelect(start, right, k_element_index, nums)
+        else:
+            self.quickSelect(left, end, k_element_index, nums)
