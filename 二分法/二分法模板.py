@@ -9,8 +9,8 @@ def binarySearch(self, nums, target):
 
 		if nums[mid] < target:
 			start = mid 
-		# elif nums[mid] == target:
-		# 	end = mid 
+		elif nums[mid] == target: # 此情况为找first index；如果找最后一个index，这里就应该是 start = mid 
+			end = mid 
 		else:
 			end = mid 
  	#如果找第一个就先start，如果找最后一个就先看end
