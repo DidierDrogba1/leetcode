@@ -1,0 +1,31 @@
+class Solution:
+    def decodeString(self, s: str) -> str:
+        if not s:
+            return s 
+        num = 0
+        stack = []
+        for ch in s:
+            if ch.isdigit():
+                num = 10 * num + int(ch) 
+            elif ch == '[':
+                stack.append(num)
+                num = 0 
+            elif ch == ']':
+                repeated_str = []
+                while stack and not isinstance(stack[-1], int):
+                    repeated_str.append(stack.pop()) 
+                repeated_str.reverse()
+                repeated_time = stack.pop()
+                for _ in range(repeated_time):
+                    stack.append(''.join(repeated_str))
+                    #千万记得这里要把list转换成str
+            elif ch.isalpha():
+                stack.append(ch)
+
+        ans = []
+        while stack:
+            ans.append(stack.pop())
+        
+        ans.reverse()
+        
+        return "".join(ans)

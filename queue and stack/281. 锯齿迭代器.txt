@@ -1,0 +1,26 @@
+class ZigzagIterator:
+    #本题主要是使用了queue和iter
+    def __init__(self, v1: List[int], v2: List[int]):
+        vecs = [v1, v2]
+        self.queue = collections.deque()
+        for vec in vecs:
+            if vec:
+                self.queue.append([iter(vec), len(vec)])
+                #记得这里要用中括号变成一个list
+        
+
+    def next(self) -> int:
+        vec_iter, vec_len = self.queue.popleft()
+        value = next(vec_iter)
+        vec_len -= 1
+        if vec_len > 0:
+            self.queue.append([vec_iter, vec_len])
+        return value        
+
+    def hasNext(self) -> bool:
+        return self.queue
+        
+
+# Your ZigzagIterator object will be instantiated and called as such:
+# i, v = ZigzagIterator(v1, v2), []
+# while i.hasNext(): v.append(i.next())

@@ -1,0 +1,54 @@
+class MyStack:
+#本体主要对q2(辅助队列)都做判断
+#画图解决一切
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.q1 = collections.deque()
+        self.q2 = collections.deque()
+
+    def push(self, x: int) -> None:
+        """
+        Push element x onto stack.
+        """
+        self.q1.append(x)
+
+    def pop(self) -> int:
+        """
+        Removes the element on top of the stack and returns that element.
+        """
+        if not self.q1:  #要先判断这里，不然q1为空，while不会执行
+            self.q1, self.q2 = self.q2, self.q1 
+        while len(self.q1) > 1:
+            self.q2.append(self.q1.popleft())
+
+        return self.q1.popleft()
+
+    def top(self) -> int:
+        """
+        Get the top element.
+        """
+        if not self.q1: 
+            self.q1, self.q2 = self.q2, self.q1         
+        while len(self.q1) > 1:
+            self.q2.append(self.q1.popleft())
+        return self.q1[0]
+
+    def empty(self) -> bool:
+        """
+        Returns whether the stack is empty.
+        """
+        if not self.q1 and not self.q2:
+            return True 
+        if not self.q1 or not self.q2:
+            return False          
+
+
+
+# Your MyStack object will be instantiated and called as such:
+# obj = MyStack()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.empty()
