@@ -1,0 +1,61 @@
+class Solution:
+    def final_cal(self, nums_stack, ops_stack):
+        if len(nums_stack) <= 1 or not ops_stack:
+            return 
+
+        last_element = nums_stack.pop()
+        prev_element = nums_stack.pop()
+        op = ops_stack.pop()
+
+        if op == '+':
+            ans = prev_element + last_element 
+        elif op == '-':
+            ans = prev_element - last_element
+        elif op == '*': 
+            ans = prev_element * last_element
+        elif op == '/': 
+            ans = int(prev_element / last_element)
+
+        nums_stack.append(ans) 
+
+    def calculate(self, s: str) -> int:
+        s = s.replace(' ', '').replace('(+', '(0+').replace('(-', '(0-')
+        nums_stack = [0]
+        ops_stack = []
+        ops_map = {
+            '+' : 1,
+            '-' : 1,
+            '*' : 2,
+            '/' : 2,
+            '^' : 3
+            }
+        i = 0
+        while i <= len(s) - 1:
+            if s[i] == '(':
+                ops_stack.append(s[i])
+                i += 1
+
+            elif s[i].isdigit():
+                tmp = int(s[i])
+                i += 1
+                while i <= len(s) - 1 and s[i].isdigit():
+                    tmp = tmp * 10 + int(s[i])
+                    i += 1
+                nums_stack.append(tmp)
+            
+            elif s[i] == ')':
+                while ops_stack[-1] != '(':
+                    self.final_cal(nums_stack, ops_stack)
+                ops_stack.pop()
+                i += 1
+        
+            else:
+                while ops_stack and ops_stack[-1] != '(' and ops_map[ops_stack[-1]] >= ops_map[s[i]]:
+                    self.final_cal(nums_stack, ops_stack)
+                ops_stack.append(s[i])
+                i += 1
+
+        while ops_stack:
+            self.final_cal(nums_stack, ops_stack)
+
+        return nums_stack[-1]

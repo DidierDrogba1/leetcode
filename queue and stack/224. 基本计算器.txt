@@ -1,0 +1,70 @@
+class Solution:
+
+    ops_map = {
+        '+' : 1,
+        '-' : 1,
+        '*' : 2,
+        '/' : 2,
+        '^' : 3}
+
+    def final_cal(self, nums_stack, ops_stack):
+        if len(nums_stack) < 2 or not ops_stack:
+            return 
+
+        last_element = nums_stack.pop()
+        prev_element = nums_stack.pop()
+        op = ops_stack.pop()
+
+        ans = 0
+        if op == '+':
+            ans = prev_element + last_element 
+        elif op == '-':
+            ans = prev_element - last_element 
+        elif op == '*':
+            ans = prev_element * last_element 
+        elif op == '^':
+            ans = prev_element ** last_element 
+        elif op == '/':
+            ans = prev_element // last_element
+        
+        nums_stack.append(ans)
+
+    def calculate(self, s):
+        s = s.replace(' ', '').replace('(-', '(0-').replace('(+', '(0+')  
+        #这一步的的意义是因为在final_cal中，每个ops都对应last/prev：如果不加0的话，没有prev，只有last
+        nums_stack = [0] #-5开头，这样也没有prev
+        ops_stack = []
+
+        i = 0
+        while i <= len(s) - 1:
+            if s[i].isdigit():
+                tmp = int(s[i])
+                i += 1
+                while i <= len(s) - 1 and s[i].isdigit():
+                    tmp = tmp * 10 + int(s[i])
+                    i += 1
+                nums_stack.append(tmp)
+            
+            elif s[i] == '(':
+                ops_stack.append(s[i])
+                i += 1
+
+            elif s[i] == ')':
+                while ops_stack[-1] != '(':
+                    self.final_cal(nums_stack, ops_stack)
+                ops_stack.pop() #左括号弹出
+                i += 1
+            
+            #运算符情况
+            #要确定stack顶不是(,是左括号的话，就一定要先算括号内的运算符，继续遍历；
+            #如果不是左括号的话，就按照优先级顺序计算
+            else:
+                while ops_stack and ops_stack[-1] != '(' and self.ops_map[ops_stack[-1]] >= self.ops_map[s[i]]:
+                    self.final_cal(nums_stack, ops_stack)
+                ops_stack.append(s[i])
+                i += 1
+    
+        while ops_stack: #只要有运算符，一定有prev和last，一定可以计算
+            self.final_cal(nums_stack, ops_stack)
+            
+        return nums_stack[-1]
