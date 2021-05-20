@@ -1,0 +1,66 @@
+# # Definition for a binary tree node.
+# # class TreeNode:
+# #     def __init__(self, val=0, left=None, right=None):
+# #         self.val = val
+# #         self.left = left
+# #         self.right = right
+# class Solution:
+#     def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+#         第一种做法，BFS + Queue
+#         if not root:
+#             return []
+#         res = []
+#         queue = collections.deque()
+#         queue.append(root)
+#         left_to_right = True
+
+#         while queue:
+#             level_tmp_ans = []
+#             level_size = len(queue)
+#             while level_size > 0:
+#                 tmp_element = queue.popleft()
+#                 level_tmp_ans.append(tmp_element.val)
+#                 if tmp_element.left:
+#                     queue.append(tmp_element.left)
+#                 if tmp_element.right:
+#                     queue.append(tmp_element.right)                
+#                 level_size -= 1
+            
+#             if not left_to_right:
+#                 level_tmp_ans.reverse()
+#             res.append(level_tmp_ans)    
+#             left_to_right = not left_to_right
+
+#         return res
+
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        #第二种做法，2个stack
+        if not root:
+            return []
+        stack, helper_stack = [], []
+        final_res = []
+        stack.append(root)
+        left_to_right = True
+
+        while stack:
+            level_tmp_ans = []
+            while stack:
+                tmp_element = stack.pop()
+                if not tmp_element: #这里要注意
+                    continue
+                level_tmp_ans.append(tmp_element.val)
+
+                if left_to_right:
+                    helper_stack.append(tmp_element.left)
+                    helper_stack.append(tmp_element.right)
+                else:
+                    helper_stack.append(tmp_element.right)
+                    helper_stack.append(tmp_element.left)
+            
+            if level_tmp_ans:  #这里要注意，level_tmp可能为空
+                final_res.append(level_tmp_ans)
+            left_to_right = not left_to_right
+            stack, helper_stack = helper_stack, stack 
+
+        return final_res
