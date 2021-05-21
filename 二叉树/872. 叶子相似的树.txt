@@ -1,0 +1,27 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def leafSimilar(self, root1: TreeNode, root2: TreeNode) -> bool:
+       
+        tmp1, tmp2 = [], []
+        self.post_dfs(root1, tmp1)
+        self.post_dfs(root2, tmp2)
+        return tmp1[0] == tmp2[0]
+
+
+    def post_dfs(self, node, ans):
+        if not node:
+            return -1 
+        
+        left_node_level = self.post_dfs(node.left, ans)
+        right_node_level = self.post_dfs(node.right, ans)
+        cur_level = max(left_node_level, right_node_level) + 1
+
+        if len(ans) == cur_level:
+            ans.append([])
+        ans[cur_level].append(node.val)
+        return cur_level

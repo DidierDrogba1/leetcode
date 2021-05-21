@@ -1,0 +1,27 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findLeaves(self, root: TreeNode) -> List[List[int]]:
+        ans = []
+        self.post_order_dfs(root, ans)
+        return ans
+
+
+
+    def post_order_dfs(self, root, ans):
+        if not root:
+            return -1
+
+        left_node_level = self.post_order_dfs(root.left, ans)
+        right_node_level = self.post_order_dfs(root.right, ans)
+        cur_node_level = max(left_node_level, right_node_level) + 1
+
+        if len(ans) == cur_node_level:
+            ans.append([])
+
+        ans[cur_node_level].append(root.val)
+        return cur_node_level #这里记得写，不然没有返回值
