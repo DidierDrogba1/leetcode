@@ -1,0 +1,42 @@
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        this.val = val
+        this.left, this.right = None, None
+Definition for singly-linked list.
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+"""
+class Solution:
+    # @param {TreeNode} root the root of binary tree
+    # @return {ListNode[]} a lists of linked list
+    def binaryTreeToLists(self, root):
+        # Write your code here
+        if not root:
+            return []
+
+        final_ans = []
+        queue = collections.deque()
+        queue.append(root)
+
+        while queue:
+            dummy_node = ListNode(-1)
+            cur_node = dummy_node
+            queue_len = len(queue)
+            for i in range(queue_len):
+                tmp_element = queue.popleft()
+                cur_node.next = ListNode(tmp_element.val)  
+                cur_node = cur_node.next 
+
+                if tmp_element.left:
+                    queue.append(tmp_element.left)
+                if tmp_element.right:
+                    queue.append(tmp_element.right)
+            
+            final_ans.append(dummy_node.next)
+
+        return final_ans 
+    
