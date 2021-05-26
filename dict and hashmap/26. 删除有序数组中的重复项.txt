@@ -1,0 +1,10 @@
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        exist = set()
+        res = 0
+        for num in nums:
+            if num not in exist:
+                nums[res] = num #切记要重新赋值..
+                exist.add(num)
+                res += 1
+        return res
