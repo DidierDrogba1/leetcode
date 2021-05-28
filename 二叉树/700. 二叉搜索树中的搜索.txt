@@ -1,0 +1,41 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+# class Solution:
+#     #递归解法
+#     def searchBST(self, root: TreeNode, val: int) -> TreeNode:
+#         if not root:
+#             return None 
+#         return self.helper(root, val)
+    
+#     def helper(self, node, val):
+#         if not node:
+#             return None 
+        
+#         if val < node.val:
+#             return self.helper(node.left, val)
+#         elif val > node.val:
+#             return self.helper(node.right, val)
+#         elif val == node.val:
+#             return node
+
+
+
+class Solution:
+    #迭代解法
+    def searchBST(self, root: TreeNode, val: int) -> TreeNode:
+        if not root:
+            return None 
+        node = root 
+        while node:
+            if val < node.val:
+                node = node.left 
+            elif val > node.val:
+                node = node.right 
+            elif val == node.val:
+                return node 
+        
+        return node

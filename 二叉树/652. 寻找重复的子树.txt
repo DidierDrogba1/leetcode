@@ -1,0 +1,30 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+
+# https://leetcode-cn.com/problems/find-duplicate-subtrees/solution/python-di-gui-shu-chu-zi-shu-xie-fa-by-zedong/
+# 前序会重复很多，要用后序
+class Solution:
+    def findDuplicateSubtrees(self, root: TreeNode) -> List[TreeNode]:
+        self.count = collections.Counter()
+        self.ans = []
+        self.post_order_count(root)
+        return self.ans 
+
+
+    def post_order_count(self, node):
+        if not node:
+            return '#'
+        
+        left_sub = self.post_order_count(node.left)
+        right_sub = self.post_order_count(node.right)
+        subtree = left_sub + ',' + right_sub + ',' + str(node.val)
+        self.count[subtree] += 1
+
+        if self.count[subtree] == 2:
+            self.ans.append(node)
+        return subtree

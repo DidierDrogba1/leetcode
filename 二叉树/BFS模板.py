@@ -24,9 +24,11 @@ def BFS(self, root):
 	queue = collections.deque()
 	queue.append(root)
 
+#   level = 1
 	while queue:
 		cur_level_size = len(queue)
 		tmp_level_ans = []
+#		print ('level: ', level)
 		for i in range(cur_level_size):
 			tmp_element = queue.popleft()
 			tmp_level_ans.append(tmp_element.val)
@@ -37,6 +39,7 @@ def BFS(self, root):
 				queue.append(tmp_element.right)
 
 		final_ans.append(tmp_level_ans)
+		#level += 1
 
 	return final_ans
 
