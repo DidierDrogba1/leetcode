@@ -1,8 +1,59 @@
 class Solution:
+#     def sortColors(self, nums: List[int]) -> None:
+#         """
+#         Do not return anything, modify nums in-place instead.
+#         """
+# #0609 
+#         if not nums:
+#             return nums 
+#         self.partition(nums, 1)
+#         self.partition(nums, 2)
+
+#     def partition(self, nums, pivot):
+#         smallest_pointer = -1 
+#         length = len(nums)
+#         for i in range(length):
+#             if nums[i] < pivot:
+#                 smallest_pointer += 1
+#                 nums[smallest_pointer], nums[i] = \
+#                 nums[i], nums[smallest_pointer]
+        
     def sortColors(self, nums: List[int]) -> None:
-        """
-        Do not return anything, modify nums in-place instead.
-        """
+        if not nums:
+           return nums 
+        d = {0 : 0, 1 : 0, 2 : 0}
+        for num in nums:
+            if num in d.keys():
+                d[num] += 1 
+        
+        index = 0
+        for i in d.keys():
+            single_cnt = d[i]
+            while single_cnt > 0:
+                nums[index] = i
+                single_cnt -= 1
+                index += 1 
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     #     if not nums or len(nums) <= 1:
     #         return 
     #     self.sortColorsHelper(nums, 1)
@@ -18,13 +69,13 @@ class Solution:
             
         # 第二种方法，直接遍历数组记录每个出现次数，然后直接覆盖nums
         #有点麻烦，调过来调过去的
-        cnt_all = [0] * 3
-        for color_cnt_index in nums:
-            cnt_all[color_cnt_index] += 1 
-        index = 0
-        for i in range(len(cnt_all)):
-            single_cnt = cnt_all[i]
-            while single_cnt > 0:
-                nums[index] = i 
-                index += 1
-                single_cnt -= 1
+        # cnt_all = [0] * 3
+        # for color_cnt_index in nums:
+        #     cnt_all[color_cnt_index] += 1 
+        # index = 0
+        # for i in range(len(cnt_all)):
+        #     single_cnt = cnt_all[i]
+        #     while single_cnt > 0:
+        #         nums[index] = i 
+        #         index += 1
+        #         single_cnt -= 1
