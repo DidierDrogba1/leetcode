@@ -5,53 +5,53 @@ class Solution:
     """
     def reversePairs(self, A):
         # write your code here
+        if not A:
+            return 0
+        self.cnt = 0
+        self.mergeSort(A)
+        return self.cnt 
+
+    def mergeSort(self, A):
         tmp = [0 for _ in range(len(A))]
-        return self.merge_sort(0, len(A) - 1, A, tmp)
+        self.mergeSortHelper(tmp, A, 0, len(A) - 1)
 
-
-    def merge_sort(self, start, end, A, tmp):
+    def mergeSortHelper(self, tmp, A, start, end):
         if start >= end:
-            return 0 
-
+            return 
         mid = start + (end - start) // 2
-        cnt = 0
-        cnt += self.merge_sort(start, mid, A, tmp)
-        cnt += self.merge_sort(mid + 1, end, A, tmp)
-        cnt += self.merge(start, mid, end, A, tmp)
-        return cnt 
+        self.mergeSortHelper(tmp, A, start, mid)
+        self.mergeSortHelper(tmp, A, mid + 1, end)
+        self.merge(tmp, A, start, mid, end)
 
-
-    def merge(self, start, mid, end, A, tmp):
-        left, right = start, mid + 1
-        tmp_index = start
-        cnt = 0
-
-        while left <= mid and right <= end:
-            if A[left] <= A[right]:
-                tmp[tmp_index] = A[left]
-                tmp_index += 1
-                left += 1
+    def merge(self, tmp, A, start, mid, end):
+        left_pointer, right_pointer = start, mid + 1
+        tmp_idx = start
+        while left_pointer <= mid and right_pointer <= end:
+            if A[left_pointer] <= A[right_pointer]:
+                tmp[tmp_idx] = A[left_pointer]
+                tmp_idx += 1
+                left_pointer += 1
             else:
-                tmp[tmp_index] = A[right]
-                tmp_index += 1
-                right += 1
-                cnt += mid - left + 1
+                tmp_cnt = mid - left_pointer + 1 
+                self.cnt += tmp_cnt
+                tmp[tmp_idx] = A[right_pointer]
+                tmp_idx += 1
+                right_pointer += 1
 
-        while left <= mid:
-                tmp[tmp_index] = A[left]
-                tmp_index += 1
-                left += 1
+        while left_pointer <= mid:
+            tmp[tmp_idx] = A[left_pointer]
+            tmp_idx += 1
+            left_pointer += 1 
 
-        while right <= end:
-                tmp[tmp_index] = A[right]
-                tmp_index += 1
-                right += 1          
+        while right_pointer <= end:
+            tmp[tmp_idx] = A[right_pointer]
+            tmp_idx += 1
+            right_pointer += 1
 
         for i in range(start, end + 1):
-            A[i] = tmp[i]  
-        
-        return cnt 
+            A[i] = tmp[i]                                       
 
 
 
-        
+
+

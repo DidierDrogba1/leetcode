@@ -1,0 +1,33 @@
+class Solution:
+    """
+    @param chars: The letter array you should sort by Case
+    @return: nothing
+    """
+    def sortLetters(self, chars):
+        # write your code here
+        if not chars:
+            return chars 
+        self.sortLettersHelper(chars, 0, len(chars) -1)
+        return chars 
+
+    def sortLettersHelper(self, chars, start, end):
+        # if start >= end:
+        #     return 
+
+        left_pointer, right_pointer = start, end 
+        while left_pointer <= right_pointer:
+            left_tmp = ord(chars[left_pointer])
+            right_tmp = ord(chars[right_pointer])
+            while left_pointer <= right_pointer and \
+            ord('a') <= left_tmp <= ord('z'):
+                left_pointer += 1
+            while left_pointer <= right_pointer and \
+            ord('A') <= right_tmp <= ord('Z'):
+                right_pointer -= 1
+            if left_pointer <= right_pointer:
+                chars[left_pointer], chars[right_pointer] = \
+                chars[right_pointer], chars[left_pointer]
+                left_pointer += 1
+                right_pointer -= 1
+        # self.sortLettersHelper(chars, start, right_pointer)
+        # self.sortLettersHelper(chars, left_pointer, end)
