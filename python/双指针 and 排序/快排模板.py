@@ -22,7 +22,7 @@ def quickSortHelper(self, nums, start, end):
 	left_pointer, right_pointer = start, end 
 
 	while left_pointer <= right_pointer:
-		while left_pointer <= right_pointer and nums[left_pointer] < pivot: #注意这里没有等号
+		while left_pointer <= right_pointer and nums[left_pointer] < pivot: #注意这里是while，而且没有等号
 			left_pointer += 1
 		while left_pointer <= right_pointer and nums[right_pointer] > pivot: #注意nums[right_pointer] == pivot时候，R指针停止，等待交换
 			right_pointer -= 1
@@ -31,7 +31,7 @@ def quickSortHelper(self, nums, start, end):
 			left_pointer += 1
 			right_pointer -= 1
 
-	self.quickSortHelper(nums, start, right_pointer)
+	self.quickSortHelper(nums, start, right_pointer) #先整体有序，再局部有序
 	self.quickSortHelper(nums, left_pointer, end)
 
 

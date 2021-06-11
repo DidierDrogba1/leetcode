@@ -1,0 +1,22 @@
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        if not s:
+            return True 
+        left_p, right_p = 0, len(s) - 1
+        while left_p < right_p:
+            while left_p < right_p and \
+            not self.isValid(s[left_p]):
+                left_p += 1
+            while left_p < right_p and \
+            not self.isValid(s[right_p]):
+                right_p -= 1
+            if s[left_p].lower() != s[right_p].lower():
+                return False 
+            else:
+                left_p += 1
+                right_p -= 1           
+        
+        return True 
+
+    def isValid(self, s):
+        return s.isalpha() or s.isdigit()
