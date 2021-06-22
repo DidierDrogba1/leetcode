@@ -1,3 +1,4 @@
+#二分法是在排好序的数组上进行
 def binarySearch(self, nums, target):
 	if not nums:
 		return -1
@@ -19,3 +20,29 @@ def binarySearch(self, nums, target):
 	if nums[end] == target:
 		return end
 	return -1 
+
+## 递归方式实现二分法
+def binarySearch(self, nums, target):
+	if not nums:
+		return -1
+
+
+
+def binarySearch_Helper(self, nums, target, start, end):
+	if start + 1 >= end:
+		if nums[start] == target:
+			return start 
+		if nums[end] == target:
+			return end
+		return -1 
+
+	mid = start + (end - start) // 2 
+	tmp = nums[mid]
+	if tmp < target:
+		return self.binarySearch_Helper(nums, target, mid, end)
+	elif tmp > target:
+		return self.binarySearch_Helper(nums, target, start, mid)
+	elif tmp == target: 
+		return self.binarySearch_Helper(nums, target, mid, end)
+
+

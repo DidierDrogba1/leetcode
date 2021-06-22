@@ -1,31 +1,45 @@
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        ans = []
-        nums = sorted(nums) # 双指针需要在排序好的list中使用，sorted默认升序
-        if not nums or len(nums) < 3:
-            return ans
+        if not nums or len(nums) <= 2:
+            return []
+        nums.sort()
+        #nums = sorted(nums) 
+        self.final_ans = []
+        idx = 0
+        for idx in range(len(nums) - 2):
+            ###不能用nums[idx] == nums[idx + 1]，因为[0,0,0]这种情况就没有正确解了
+            ###记得idx > 0很重要，不然nums[idx - 1]就变成nums[-1]了
+            if idx > 0 and nums[idx] == nums[idx - 1]: 
+                continue
+            self.twoSum(idx, nums)
+        return self.final_ans    
 
-        for i in range(0, len(nums) - 2):
-            if i > 0 and nums[i] == nums[i - 1]: 
-                #i指针从左向右走，遇到和上一个相同的数字，跳过当前数字
-                continue 
-            start, end = i + 1, len(nums) - 1
-            target = -nums[i]
-            self.find_two_sum(start, end, nums, target, ans)
-        return ans
-    
-    def find_two_sum(self, start, end, nums, target, ans):
-        while start < end:
-            if nums[start] + nums[end] == target:
-                ans.append([-target, nums[start], nums[end]])
-                start += 1
-                end -= 1
-                #start, end前一个遇到过相同数字，跳过当前数字
-                while start < end and nums[start - 1] == nums[start]:
-                    start += 1               
-                while start < end and nums[end + 1] == nums[end]:
-                    end -= 1                
-            elif nums[start] + nums[end] < target:
-                start += 1
-            else:
-                end -= 1
+        # while idx <= len(nums) - 3:
+        #     #nums[idx] == nums[idx + 1] 似乎很麻烦，记得idx > 0很重要
+        #     if nums[idx] == nums[idx + 1]: 
+        #         idx += 1
+        #     self.twoSum(idx, nums)
+
+    def twoSum(self, idx, nums):     
+            target = -nums[idx]
+            left_pointer, right_pointer = idx + 1, len(nums) - 1
+            
+            while left_pointer < right_pointer:
+                if nums[left_pointer] + nums[right_pointer] == target:
+                    self.final_ans.append([-target, nums[left_pointer], \
+                    nums[right_pointer]])
+                    left_pointer += 1
+                    right_pointer -= 1
+
+                    while left_pointer < right_pointer and \
+                    nums[left_pointer] == nums[left_pointer - 1]:
+                        left_pointer += 1
+
+                    while left_pointer < right_pointer and \
+                    nums[right_pointer] == nums[right_pointer + 1]:
+                        right_pointer -= 1 
+
+                elif nums[left_pointer] + nums[right_pointer] < target:
+                    left_pointer += 1
+                else:
+                    right_pointer -=1
