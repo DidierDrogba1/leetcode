@@ -1,25 +1,45 @@
 class Solution:
-    #ans = 0
     def triangleNumber(self, nums: List[int]) -> int:
         if not nums or len(nums) < 3:
-            return 0
-        nums = sorted(nums)
-        ans = 0
+            return 0 
+        nums.sort()
+        self.ans = 0 
         for i in range(2, len(nums)):
-            target_val = nums[i]
-            ans += self.get_valid_trangle(0, i - 1, target_val, nums)
-        
-        return ans 
+            start, end = 0, i - 1
+            self.findNumber(start, end, i, nums)
+        return self.ans 
 
-    def get_valid_trangle(self, start, end, target_val, nums):
-        cnt = 0
-        while start < end:
-            if nums[start] + nums[end] > target_val:
-                cnt += (end - start)
-                end -= 1
-            elif nums[start] + nums[end] < target_val:
-                start += 1
+                
+    def findNumber(self, start, end, i, nums):
+        left_pointer, right_pointer = start, end
+        while left_pointer < right_pointer:
+            if nums[left_pointer] + nums[right_pointer] > nums[i]:
+                self.ans += right_pointer - left_pointer 
+                right_pointer -= 1 
+                ##这里是计算所有左指针的可行解，然后移动右指针 
             else:
-                start += 1
+                left_pointer += 1
+                ## 两数之和过小，左指针右移
 
-        return cnt
+
+# class Solution:
+#     def triangleNumber(self, nums: List[int]) -> int:
+#         if not nums or len(nums) < 3:
+#             return 0 
+#         self.ans = 0  
+#         nums.sort()      
+#         for i in range(len(nums) - 2):
+#             self.findNumber(i, i + 1, len(nums) - 1, nums)
+#         return self.ans 
+
+#     def findNumber(self, i, left_pointer, right_pointer, nums):
+#         ### 固定一个小边，似乎比较麻烦
+#         ### 双指针2234 会出错
+          ### 如果枚举最小值，我想到的是用前缀和+二分代替你这里的双指针
+#         #left_pointer, right_pointer = i + 1, len(nums) - 1
+#         while left_pointer < right_pointer:
+#             if nums[i] + nums[left_pointer] > nums[right_pointer]:
+#                 left_pointer += 1
+#                 self.ans += 1
+#             else:
+#                 left_pointer += 1

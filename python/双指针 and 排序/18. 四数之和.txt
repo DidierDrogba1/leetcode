@@ -1,41 +1,53 @@
-class Solution:  
-    #最好不用全局变量？
+class Solution:
     def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
-        ans = []          
-        if not nums or len(nums) < 4:
-            return ans 
+        if not nums or len(nums) <= 3:
+            return []
         nums.sort()
-        length = len(nums)
-        for a_id in range(length - 3):
-            if a_id >= 1 and nums[a_id] == nums[a_id - 1]:
-                continue 
-            if nums[a_id] + nums[a_id + 1] + nums[a_id + 2] + nums[a_id + 3] > target:
-                break 
-            if nums[a_id] + nums[length - 3] + nums[length - 2] + nums[length - 1] \
-            < target:
+        self.ans = []
+        for a_id in range(len(nums) - 3):
+            ##去重逻辑,越界问题
+            if a_id > 0 and nums[a_id] == nums[a_id - 1]:
                 continue
-            for b_id in range(a_id + 1, length - 2):
-                if b_id > a_id + 1 and nums[b_id] == nums[b_id - 1]:
-                    continue 
-                if nums[a_id] + nums[b_id] + nums[b_id + 1] + nums[b_id + 2] > target:
-                    break 
-                if nums[a_id] + nums[b_id] + nums[length - 2] + nums[length - 1] < target:
-                    continue 
-            # classic two pointers 
-                start, end = b_id + 1, length - 1
-                while start < end:
-                    target_cd = target - nums[a_id] - nums[b_id]
-                    if nums[start] + nums[end] == target_cd:
-                        ans.append([nums[a_id], nums[b_id], nums[start], nums[end]])
-                        start += 1
-                        end -= 1
-                        while start < end and start >= 1 and nums[start] == nums[start - 1]: 
-                            #这里是while，特别注意，因为if只会判断一次
-                            start += 1
-                        while start < end and end <= length - 2 and nums[end] == nums[end + 1]:
-                            end += 1
-                    elif nums[start] + nums[end] > target_cd:
-                        end -= 1
-                    elif nums[start] + nums[end] < target_cd:
-                        start += 1
-        return ans
+            self.a_tmp = nums[a_id]
+            three_sum_target = target - self.a_tmp
+            # three_sum 最大取到 len - 3 
+            b_start, b_end = a_id + 1, len(nums) - 3
+            self.threeSum(nums, three_sum_target, b_start, b_end)
+
+        return self.ans
+
+    def threeSum(self, nums, three_sum_target, b_start, b_end):
+        ##去重逻辑，越界问题
+        for b_id in range(b_start, b_end + 1):
+            if b_id > b_start and nums[b_id] == nums[b_id - 1]:
+                continue
+            self.b_tmp = nums[b_id]
+            two_sum_target =  three_sum_target - self.b_tmp
+            c_start, c_end = b_id + 1, len(nums) - 1
+            self.twoSum(nums, two_sum_target, c_start, c_end)
+
+    def twoSum(self, nums, two_sum_target, c_start, c_end):
+        # target记得要单独计算
+        left_pointer, right_pointer = c_start, c_end 
+        while left_pointer < right_pointer:
+            if nums[left_pointer] + nums[right_pointer] > two_sum_target:
+                right_pointer -= 1
+            elif nums[left_pointer] + nums[right_pointer] < two_sum_target:
+                left_pointer += 1
+            else:
+                self.ans.append\
+                ([self.a_tmp, self.b_tmp, nums[left_pointer], nums[right_pointer]])
+                while left_pointer < right_pointer and nums[left_pointer] == \
+                nums[left_pointer + 1]:
+                    ###注意去重逻辑,越界问题;这里和上面的越界处理方法不一样
+                    ### 这里L往左走可能会越界，往中间走不会越界，因为有L<R的条件判定
+                    left_pointer += 1
+
+                while left_pointer < right_pointer and nums[right_pointer] == \
+                nums[right_pointer - 1]:
+                    ###注意去重逻辑,越界问题;这里和上面的越界处理方法不一样
+                    ### 这里R往右走可能会越界，往中间走不会越界，因为有L<R的条件判定
+                    right_pointer -= 1
+                left_pointer += 1
+                right_pointer -= 1
+

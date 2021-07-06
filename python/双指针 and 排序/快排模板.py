@@ -18,11 +18,15 @@ def quickSort(self, nums):
 def quickSortHelper(self, nums, start, end):
 	if start >= end:
 		return 
-	pivot = nums[start + (end - start) // 2]
+    mid_idx = start + (end - start) // 2
+    pivot = nums[mid_idx]
 	left_pointer, right_pointer = start, end 
 
 	while left_pointer <= right_pointer:
-		while left_pointer <= right_pointer and nums[left_pointer] < pivot: #注意这里是while，而且没有等号
+		## 使用L <= R的好处在于，L指针永远指向右分区的第一个位置。 
+		## L < R就不一定了，可以看 113的例子；pivot = 2, 要求左边 < p, 右边 >= p.
+		while left_pointer <= right_pointer and nums[left_pointer] < pivot: 
+		#注意这里是while，而且没有等号;如果 nums[left_pointer] <= pivot， 那么111这种情况问题规模不会缩小，会一直递归，造成stackoverflow。 
 			left_pointer += 1
 		while left_pointer <= right_pointer and nums[right_pointer] > pivot: #注意nums[right_pointer] == pivot时候，R指针停止，等待交换
 			right_pointer -= 1

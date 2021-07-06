@@ -5,6 +5,7 @@ def binarySearch(self, nums, target):
 
 	start, end = 0, len(nums) - 1
 
+	## 切记，这里是 s+1<e
 	while start + 1 < end:
 		mid = (start + end) // 2
 
