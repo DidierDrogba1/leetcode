@@ -1,0 +1,7 @@
+export http_proxy="http://192.168.31.100:7890"
+export https_proxy="http://192.168.31.100:7890"
+unset http_proxy
+unset https_proxy
+
+
+这个办法的好处是简单直接，并且影响面很小（只对当前终端有效，退出就不行了）。
